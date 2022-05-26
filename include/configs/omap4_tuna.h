@@ -309,7 +309,7 @@
 	"tuna_get_bootmode; "\
 	"echo [Tuna] bootmode $tuna_bootmode_val; " \
 	"tuna_print_revision ; " \
-	"run tuna_boot ;"
+	"ver ;"
 
 /*
  * Miscellaneous configurable options
