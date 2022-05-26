@@ -221,9 +221,9 @@
 	"usbnet_devaddr=f0:bf:97:e4:e5:e6\0" \
 	"usbnet_hostaddr=f0:bf:97:e4:e5:ef\0" \
 	"usbtty=cdc_acm\0" \
-	"stdout=serial\0" \
-	"stdin=serial\0" \
-	"stderr=serial\0" \
+	"stdout=serial,vga\0" \
+	"stdin=serial,vga\0" \
+	"stderr=serial,vga\0" \
 	"loadaddr=0x82000000\0"
 
 #define CONFIG_BOOTCOMMAND \
