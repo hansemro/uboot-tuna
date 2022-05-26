@@ -282,6 +282,7 @@
 	\
 	"tuna_boot=mmc rescan; " \
 		"mmc dev 0; " \
+		"ver; " \
 		"tuna_get_bootmode; " \
 		"tuna_check_cable; " \
 		"tuna_fsa9480_open_int; " \
@@ -379,18 +380,24 @@
 #define CONFIG_SYS_DEFAULT_LPDDR2_TIMINGS
 #endif
 
+#if 0
 #ifndef TUNA_SPL_BUILD
 	#define CONFIG_VIDEO
 	#define CONFIG_CFB_CONSOLE
 	#define CONFIG_VGA_AS_SINGLE_DEVICE
-	#define CONFIG_STD_DEVICES_SETTINGS "stdin=vga,serial\0" \
-									"stdout=vga,serial\0" \
-									"stderr=vga,serial\0"
+	#define CONFIG_STD_DEVICES_SETTINGS "stdin=serial\0" \
+									"stdout=serial\0" \
+									"stderr=serial\0"
 #else
 	#define CONFIG_STD_DEVICES_SETTINGS "stdin=serial\0" \
 									"stdout=serial\0" \
 									"stderr=serial\0"
 #endif
+#endif
+
+#define CONFIG_STD_DEVICES_SETTINGS "stdin=serial\0" \
+                                "stdout=serial\0" \
+                                "stderr=serial\0"
 
 /*
  * 64 bytes before this address should be set aside for u-boot.img's
@@ -418,6 +425,6 @@
 
 /* ENV related config options */
 #define CONFIG_ENV_IS_NOWHERE
-#define CONFIG_SYS_PROMPT		"Galaxy Nexus # "
+#define CONFIG_SYS_PROMPT		"Espresso # "
 
 #endif /* __CONFIG_TUNA_H */
