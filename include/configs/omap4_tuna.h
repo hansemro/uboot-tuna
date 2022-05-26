@@ -220,95 +220,13 @@
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"usbnet_devaddr=f0:bf:97:e4:e5:e6\0" \
 	"usbnet_hostaddr=f0:bf:97:e4:e5:ef\0" \
-	"loadaddr=0x82000000\0" \
 	"usbtty=cdc_acm\0" \
-	"kernel_name=/boot/vmlinux.uimg\0" \
-	"script_img/boot/boot.scr.uimg\0" \
-	\
-	"load_boot_script=if ext4load ${devtype} ${devnum}:${script_part} " \
-			"${loadaddr} ${script_img}; then " \
-			"source ${loadaddr}; " \
-		"elif fatload ${devtype} ${devnum}:${script_part} " \
-				"${loadaddr} ${script_img}; then " \
-			"source ${loadaddr}; " \
-		"fi\0" \
-	\
-	"custom_boot=echo Load Address:${loadaddr};" \
-		"echo Cmdline:${bootargs}; " \
-		"if ext4load ${devtype} ${devnum}:${kernel_part} " \
-			"${loadaddr} ${kernel_name}; then " \
-			"bootm ${loadaddr}; " \
-		"elif fatload ${devtype} ${devnum}:${kernel_part} " \
-		            "${loadaddr} ${kernel_name}; then " \
-			"bootm ${loadaddr};" \
-		"fi\0" \
-	\
-	"boot_custom_emmc=echo Booting custom image; " \
-		"tuna_set_led 4; " \
-		"setenv loadaddr 0x81f00000; " \
-		"setenv script_img /media/boot/boot.scr.uimg; " \
-		"setenv kernel_name /media/boot/vmlinux.uimg; " \
-		"setenv script_part 0xc; " \
-		"setenv kernel_part 0xc; " \
-		"setenv rootpart 0xc; " \
-		"setenv devnum 0; " \
-		"setenv devtype mmc; " \
-		"setenv bootargs " \
-			"${dev_extras} root=/dev/${devname}${rootpart} rootwait ro ;"\
-		"run load_boot_script; " \
-		"run custom_boot\0" \
-	\
-	"boot_system=echo Booting SYSTEM; "\
-		"tuna_set_led 6; " \
-		"setenv bootargs " ANDROID_CMDLINE " ; " \
-		"setenv kernel_part 0xa; " \
-		"setenv devnum 0; " \
-		"setenv devtype mmc; " \
-		"run custom_boot\0" \
-	\
-	"boot_recovery=echo Booting RECOVERY; " \
-		"tuna_set_led 2; " \
-		"setenv bootargs " ANDROID_CMDLINE " ; " \
-		"mmc dev 0; " \
-		"mmc read ${loadaddr} 0x18000 0x6000; "\
-		"echo Command line: ${bootargs}; " \
-		"bootm ${loadaddr}\0" \
-	\
-	BOOT_KERNEL \
-	"go_usbtty=setenv stdin usbtty; " \
-		"setenv stdout usbtty; " \
-		"setenv stderr usbtty; " \
-		"tuna_set_led 3\0" \
-	\
-	"tuna_boot=mmc rescan; " \
-		"mmc dev 0; " \
-		"ver; " \
-		"tuna_get_bootmode; " \
-		"tuna_check_cable; " \
-		"tuna_fsa9480_open_int; " \
-		"if test $tuna_bootmode_val -eq 0; then " \
-			"echo Regular boot; " \
-			"run boot_system; " \
-			"run boot_android; " \
-		"elif test $tuna_bootmode_val -eq 1; then " \
-			"echo Recovery boot; " \
-			"run boot_recovery; " \
-		"elif test $tuna_bootmode_val -eq 2; then " \
-			"echo Custom boot from userdata; " \
-			"run boot_custom_emmc; " \
-		"elif test $tuna_bootmode_val -eq 3; then " \
-			"echo USB TTY mode; " \
-			"dhcp; " \
-			"exit 0; " \
-		"fi; " \
-		"tuna_set_led 7; " \
-		"echo Failed to boot\0"
+	"stdout=serial\0" \
+	"stdin=serial\0" \
+	"stderr=serial\0" \
+	"loadaddr=0x82000000\0"
 
 #define CONFIG_BOOTCOMMAND \
-	"echo Booting up ;" \
-	"tuna_get_bootmode; "\
-	"echo [Tuna] bootmode $tuna_bootmode_val; " \
-	"tuna_print_revision ; " \
 	"ver ;"
 
 /*
@@ -380,24 +298,16 @@
 #define CONFIG_SYS_DEFAULT_LPDDR2_TIMINGS
 #endif
 
-#if 0
-#ifndef TUNA_SPL_BUILD
-	#define CONFIG_VIDEO
-	#define CONFIG_CFB_CONSOLE
-	#define CONFIG_VGA_AS_SINGLE_DEVICE
-	#define CONFIG_STD_DEVICES_SETTINGS "stdin=serial\0" \
-									"stdout=serial\0" \
-									"stderr=serial\0"
-#else
-	#define CONFIG_STD_DEVICES_SETTINGS "stdin=serial\0" \
-									"stdout=serial\0" \
-									"stderr=serial\0"
-#endif
-#endif
-
-#define CONFIG_STD_DEVICES_SETTINGS "stdin=serial\0" \
-                                "stdout=serial\0" \
-                                "stderr=serial\0"
+#define CONFIG_VIDEO
+#define CONFIG_CFB_CONSOLE
+#define CONFIG_VGA_AS_SINGLE_DEVICE
+#define CONFIG_CONSOLE_MUX 1
+#define CONFIG_SYS_CONSOLE_ENV_OVERWRITE 1
+#define CONFIG_SYS_STDIO_DEREGISTER 1
+#define CONFIG_SYS_CONSOLE_IS_IN_ENV 1
+#define CONFIG_STD_DEVICES_SETTINGS "stdin=serial,vga\0" \
+                                "stdout=serial,vga\0" \
+                                "stderr=serial,vga\0"
 
 /*
  * 64 bytes before this address should be set aside for u-boot.img's
