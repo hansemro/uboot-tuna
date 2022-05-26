@@ -203,9 +203,9 @@ void setup_serial_tag(struct tag **tmp)
 {
 	struct tag *params = *tmp;
 	struct tag_serialnr serialnr;
-	void get_board_serial(struct tag_serialnr *serialnr);
+	//void get_board_serial(struct tag_serialnr *serialnr);
 
-	get_board_serial(&serialnr);
+	//get_board_serial(&serialnr);
 	params->hdr.tag = ATAG_SERIAL;
 	params->hdr.size = tag_size (tag_serialnr);
 	params->u.serialnr.low = serialnr.low;

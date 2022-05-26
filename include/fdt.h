@@ -1,5 +1,6 @@
-#ifndef _FDT_H
+#if !defined(_FDT_H) && !defined(FDT_H)
 #define _FDT_H
+#define FDT_H
 
 #ifndef __ASSEMBLY__
 
