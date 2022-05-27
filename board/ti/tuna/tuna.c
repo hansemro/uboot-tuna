@@ -51,6 +51,7 @@
 #ifdef CONFIG_TWL6030_POWER
 #include <twl6030.h>
 #endif
+#include "omap4_debug.h"
 
 #define TUNA_GPIO_USB3333_RESETB 159
 
